@@ -23,9 +23,11 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php($i = 1)
                             @foreach ($rooms as $item)
                                 <tr>
-                                    <td>{{ $item->room_id }}</td>
+                                    {{-- <td>{{ $item->room_id }}</td> --}}
+                                    <td>{{ $i++ }}
                                     <td>{{ $item->room_name }}</td>
                                     <td>{{ $item->room_status }}</td>
                                     <td>{{ $item->room_desc }}</td>
@@ -34,6 +36,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $rooms->links('vendor\pagination\bootstrap-5') }}
                 </div>
             </div>
         </div>

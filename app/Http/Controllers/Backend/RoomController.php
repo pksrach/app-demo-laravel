@@ -10,8 +10,12 @@ class RoomController extends Controller
 {
     public function index()
     {
-        $data['rooms'] = DB::table('tbl_room')->get();
+        $data['rooms'] = DB::table('rooms')->get();
 
+        $data['rooms'] = DB::table('rooms')
+            ->orderBy('room_id', 'desc')
+            ->paginate(config('app.row'));
+        // ->get();
         return view('backend.room.index', $data);
     }
 }
