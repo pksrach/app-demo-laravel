@@ -33,10 +33,13 @@
             <i class="fas fa-fw fa-cog"></i>
             <span>Manage Booking Room</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseTwo" class="collapse @yield('roomList')" aria-labelledby="headingTwo"
+            data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="{{ url('/room') }}">Room List</a>
-                <a class="collapse-item" href="#">Add New Room</a>
+                <a class="collapse-item {{ Request::is('room') ? 'active' : '' }}" href="{{ url('/room') }}">Room
+                    List</a>
+                <a class="collapse-item {{ Request::is('room/create') ? 'active' : '' }}"
+                    href="{{ url('/room/create') }}">Add New</a>
             </div>
         </div>
     </li>

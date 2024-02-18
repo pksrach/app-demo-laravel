@@ -1,4 +1,6 @@
 @extends('backend.layouts.master')
+@section('title', 'Room Information')
+@section('roomList', 'show')
 @section('content')
     <div class="container-fluid">
 
@@ -12,9 +14,9 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
-                            <tr>
+                            <tr style="background: #4e73dffa; color: #fff;">
                                 <th>Room ID</th>
                                 <th>Room Name</th>
                                 <th>Room Status</th>
@@ -23,15 +25,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @php($i = 1)
+                            <?php
+                            $page = $_GET['page'] ?? 1;
+                            if (!$page) {
+                                $page = 1;
+                            }
+                            $i = config('app.row') * ($page - 1) + 1;
+                            ?>
                             @foreach ($rooms as $item)
                                 <tr>
                                     {{-- <td>{{ $item->room_id }}</td> --}}
                                     <td>{{ $i++ }}
                                     <td>{{ $item->room_name }}</td>
-                                    <td>{{ $item->room_status }}</td>
+                                    <td>{{ $item->room_status == 1 ? 'Available' : 'Unavailable' }}</td>
                                     <td>{{ $item->room_desc }}</td>
-                                    <td>Action</td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary"><i class="far fa-edit"></i></button>
+                                        <button type="button" class="btn btn-danger"><i
+                                                class="fas fa-minus-square"></i></button>
+                                        <button type="button" class="btn btn-info"><i class="far fa-eye"></i></button>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>

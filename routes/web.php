@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 // អាកន្លែង index ហ្នឹង គឺជាឈ្មោះ function index ដែលនៅក្នុង HomeController 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::controller(RoomController::class)->group(function(){
+Route::controller(RoomController::class)->group(function () {
     Route::get('room', 'index');
+    Route::get('room/create', 'create');
+    Route::post('room/save', 'save');
 });
