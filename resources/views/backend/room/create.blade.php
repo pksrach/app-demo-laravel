@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title', 'Room Information')
+@section('title', 'Create Room')
 @section('roomList', 'show')
 @section('content')
     <!-- Begin Page Content -->
@@ -113,7 +113,7 @@
                                 <div class="col-sm-10">
                                     <div>
                                         <input class="form-control form-control-lg" name="room_photo" id="room_photo"
-                                            type="file">
+                                            type="file" accept="image/*">
                                     </div>
                                 </div>
                             </div>

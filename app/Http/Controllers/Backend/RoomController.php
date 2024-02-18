@@ -7,6 +7,9 @@ use App\Models\RoomType;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 
 class RoomController extends Controller
 {
@@ -45,7 +48,51 @@ class RoomController extends Controller
 
         $data['room_photo'] = null;
         if ($request->room_photo) {
-            $data['room_photo'] = $request->file('room_photo')->store('uploads/rooms', 'custom');
+            $image = $request->file('room_photo');
+
+            // Get the original file name
+            $originalFileName = $image->getClientOriginalName();
+
+            // Check if the original image already exists in the public/uploads/rooms directory
+            $originalImagePath = public_path('uploads/rooms/' . $originalFileName);
+            if (file_exists($originalImagePath)) {
+                $originalImage = 'uploads/rooms/' . $originalFileName;
+            } else {
+                // Store the original image
+                $image->move(public_path('uploads/rooms'), $originalFileName);
+                $originalImage = 'uploads/rooms/' . $originalFileName;
+                // $originalImage = 'uploads/rooms_resize/' . $originalFileName;
+            }
+
+            // Check if the resized image already exists in the public/uploads/rooms_resize directory
+            $resizedImagePath = public_path('uploads/rooms_resize/' . $originalFileName);
+            $resizedImageExists = file_exists($resizedImagePath);
+
+            try {
+                if (!$resizedImageExists) {
+                    if (!$resizedImageExists) {
+                        // before resize image, check if the directory exists
+                        if (!file_exists(public_path('uploads/rooms_resize'))) {
+                            mkdir(public_path('uploads/rooms_resize'), 0777, true);
+                        } else {
+                            // Resize and upload the new image
+                            $resizedImage = Image::make($originalImage)
+                                ->widen(100, function ($constraint) {
+                                    $constraint->upsize();
+                                })
+                                ->encode($image->getClientOriginalExtension());
+
+                            $resizedImage->save($resizedImagePath);
+                        }
+                    }
+                }
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                return redirect('room/create')->with('error', $e->getMessage());
+            }
+
+            // Insert the original image path into the database
+            $data['room_photo'] = $originalImage;
         }
 
         try {

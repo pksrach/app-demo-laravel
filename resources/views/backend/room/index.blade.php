@@ -17,7 +17,8 @@
                     <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr style="background: #4e73dffa; color: #fff;">
-                                <th>Room ID</th>
+                                <th>#</th>
+                                <th>Room Photo</th>
                                 <th>Room Name</th>
                                 <th>Room Status</th>
                                 <th>Description</th>
@@ -35,7 +36,8 @@
                             @foreach ($rooms as $item)
                                 <tr>
                                     {{-- <td>{{ $item->room_id }}</td> --}}
-                                    <td>{{ $i++ }}
+                                    <td>{{ $i++ }}</td>
+                                    <td><img src="{{ asset($item->room_photo ?? 'default.jpg') }}" width="50"></td>
                                     <td>{{ $item->room_name }}</td>
                                     <td>{{ $item->room_status == 1 ? 'Available' : 'Unavailable' }}</td>
                                     <td>{{ $item->room_desc }}</td>
