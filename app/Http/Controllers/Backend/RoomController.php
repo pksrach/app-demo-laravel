@@ -22,7 +22,9 @@ class RoomController extends Controller
             ->select('rooms.*', 'room_types.room_type_name')
             ->orderBy('room_id', 'desc')
             ->paginate(config('app.row'));
-        return view('backend.room.index', $data);
+
+        $room_type = RoomType::all();
+        return view('backend.room.index', $data, compact('room_type'));
     }
 
     public function create()
