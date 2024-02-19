@@ -107,10 +107,10 @@ class RoomController extends Controller
             );
             $i = DB::table('rooms')->insert($data);
             if ($i) {
-                return redirect('room/create')->with('success', 'Data Inserted Successfully');
+                return redirect('room')->with('success', 'Data Inserted Successfully');
             }
         } catch (Exception $e) {
-            return redirect('room/create')->with('error', $e->getMessage());
+            return redirect('room')->with('error', $e->getMessage());
         }
     }
 }
