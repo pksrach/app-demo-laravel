@@ -94,7 +94,7 @@ class RoomController extends Controller
             }
 
             // Insert the original image path into the database
-            $data['room_photo'] = $originalImage;
+            $data['room_photo'] = $originalFileName;
         }
 
         try {

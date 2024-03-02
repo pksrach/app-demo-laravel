@@ -53,6 +53,7 @@
                                 <th>Room Photo</th>
                                 <th>Room Name</th>
                                 <th>Room Status</th>
+                                <th>Room Type</th>
                                 <th>Description</th>
                                 <th>Action</th>
                             </tr>
@@ -68,18 +69,48 @@
                             @foreach ($rooms as $item)
                                 <tr>
                                     {{-- <td>{{ $item->room_id }}</td> --}}
+                                    <td hidden>{{ $item->room_id }}</td>
                                     <td>{{ $i++ }}</td>
-                                    <td><img src="{{ asset($item->room_photo ?? 'default.jpg') }}" width="50"></td>
+                                    @php
+                                        $photo = $item->room_photo ? 'uploads/rooms_resize/' . $item->room_photo : 'default.jpg';
+                                    @endphp
+                                    <td><img src="{{ asset($photo) }}" width="50"></td>
                                     <td>{{ $item->room_name }}</td>
                                     <td>{{ $item->room_status == 1 ? 'Available' : 'Unavailable' }}</td>
+                                    <td>{{ $item->room_type_name }}</td>
                                     <td>{{ $item->room_desc }}</td>
                                     <td>
-                                        <button type="button" class="btn btn-primary"><i class="far fa-edit"></i></button>
+                                        <button type="button" class="btn btn-primary" id="btnEdit"
+                                            onclick="$('#myModal'+{{ $item->room_id }}).modal('show');"><i
+                                                class="far fa-edit" id="btnEdit"></i></button>
                                         <button type="button" class="btn btn-danger"><i
                                                 class="fas fa-minus-square"></i></button>
                                         <button type="button" class="btn btn-info"><i class="far fa-eye"></i></button>
                                     </td>
                                 </tr>
+                                <div class="modal fade" id="myModal{{ $item->room_id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content container-fluid">
+                                            <div class="row">
+                                                <div class="col-12">
+
+                                                    <div class="row">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Update</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            @include('backend.room.modal.form_update_room')
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @endforeach
                         </tbody>
                     </table>
@@ -112,9 +143,36 @@
         </div>
 
     </div>
-    <script>
+@endsection
+@section('myJs')
+    <script type="text/javascript">
         document.getElementById('createButton').addEventListener('click', function() {
             $('#myModal').modal('show');
         });
+        function previewImgForUpdate(event) {
+            if (event.target.files && event.target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('img2');
+                    output.src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                console.log('No files selected');
+            }
+        }
+
+        function previewImgForCreate(event) {
+            if (event.target.files && event.target.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function() {
+                    var output = document.getElementById('img1');
+                    output.src = reader.result;
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            } else {
+                console.log('No files selected');
+            }
+        }
     </script>
 @endsection
