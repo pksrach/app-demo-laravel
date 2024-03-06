@@ -20,6 +20,7 @@ class RoomController extends Controller
         $data['rooms'] = DB::table('rooms')
             ->join('room_types', 'rooms.room_type_id', '=', 'room_types.room_type_id')
             ->select('rooms.*', 'room_types.room_type_name')
+            ->where('room_active', '1')
             ->orderBy('room_id', 'desc')
             ->paginate(config('app.row'));
 
@@ -31,6 +32,17 @@ class RoomController extends Controller
     {
         $room_type = RoomType::all();
         return view('backend.room.create', compact('room_type'));
+    }
+
+    public function edit($id)
+    {
+        $data['room'] = DB::table('rooms')
+            ->where('room_id', $id)
+            ->where('room_active', '1')
+            ->first();
+
+        $room_type = RoomType::all();
+        return view('backend.room.edit', $data, compact('room_type'));
     }
 
     public function save(Request $request)
@@ -90,7 +102,7 @@ class RoomController extends Controller
                 }
             } catch (Exception $e) {
                 Log::error($e->getMessage());
-                return redirect('room/create')->with('error', $e->getMessage());
+                return redirect('room')->with('error', $e->getMessage());
             }
 
             // Insert the original image path into the database
@@ -111,6 +123,85 @@ class RoomController extends Controller
             }
         } catch (Exception $e) {
             return redirect('room')->with('error', $e->getMessage());
+        }
+    }
+
+
+    public function delete($id)
+    {
+        $i = DB::table('rooms')
+            ->where('room_id', $id)
+            ->update(['room_active' => '0']);
+        return redirect('room')->with('success', 'Data Deleted Successfully');
+    }
+
+    public function update(Request $req)
+    {
+        $req->validate(
+            [
+                'room_name' => 'required|max:191',
+                'room_status' => 'required',
+                'room_type_id' => 'required',
+            ],
+            [
+                'room_name.required' => 'Please input room name',
+                'room_type_id.required' => 'Please select room type',
+                'room_status.required' => 'Please select room status',
+            ]
+        );
+
+        $data = array(
+            'room_name' => $req->room_name,
+            'room_desc' => $req->room_desc,
+            'room_status' => $req->room_status,
+            'room_type_id' => $req->room_type_id,
+        );
+
+        if ($req->room_photo) {
+            $image = $req->file('room_photo');
+            $originalFileName = $image->getClientOriginalName();
+            $originalImagePath = public_path('uploads/rooms/' . $originalFileName);
+            if (file_exists($originalImagePath)) {
+                $originalImage = 'uploads/rooms/' . $originalFileName;
+            } else {
+                $image->move(public_path('uploads/rooms'), $originalFileName);
+                $originalImage = 'uploads/rooms/' . $originalFileName;
+            }
+
+            $resizedImagePath = public_path('uploads/rooms_resize/' . $originalFileName);
+            $resizedImageExists = file_exists($resizedImagePath);
+
+            try {
+                if (!$resizedImageExists) {
+                    if (!file_exists(public_path('uploads/rooms_resize'))) {
+                        mkdir(public_path('uploads/rooms_resize'), 0777, true);
+                    }
+
+                    $resizedImage = Image::make($originalImage)
+                        ->widen(100, function ($constraint) {
+                            $constraint->upsize();
+                        })
+                        ->encode($image->getClientOriginalExtension());
+
+                    $resizedImage->save($resizedImagePath);
+                }
+
+                $data['room_photo'] = $originalFileName;
+            } catch (Exception $e) {
+                Log::error($e->getMessage());
+                return redirect('room')->with('error', $e->getMessage());
+            }
+        }
+
+        $i = DB::table('rooms')
+            ->where('room_id', $req->room_id)
+            ->where('room_active', '1')
+            ->update($data);
+
+        if ($i) {
+            return redirect('room')->with('success', 'Data Updated Successfully');
+        } else {
+            return redirect('room')->with('error', 'Data Updated Failed');
         }
     }
 }

@@ -6,42 +6,11 @@
     </div>
     <div class="card-body">
 
-        @if (Session::has('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Success!</strong> {{ session('success') }}
-                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
-
-        @if (Session::has('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Error!</strong> {{ session('error') }}
-                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                Required:
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        @endif
-
         <div class="form-group row">
             <label for="room_name" class="col-sm-2 col-form-label">RoomName <span class="text-danger">*</span></label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" name="room_name" id="room_name" autofocus>
+                <input type="text" class="form-control" name="room_name" id="room_name"
+                    value="{{ old('room_name', request()->input('room_name')) }}" autofocus>
                 @error('room_name')
                     <div class="text-sm text-danger">{{ $message }}</div>
                 @enderror
@@ -51,7 +20,7 @@
         <div class="form-group row">
             <label for="room_desc" class="col-sm-2 col-form-label">RoomDesc</label>
             <div class="col-sm-10">
-                <textarea class="form-control" name="room_desc" id="room_desc"></textarea>
+                <textarea class="form-control" name="room_desc" id="room_desc">{{ old('room_desc', request()->input('room_desc')) }}</textarea>
             </div>
         </div>
 
@@ -103,4 +72,3 @@
         <button type="submit" class="btn btn-primary btn-md">Save</button>
     </div>
 </form>
-

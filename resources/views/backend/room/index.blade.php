@@ -72,7 +72,9 @@
                                     <td hidden>{{ $item->room_id }}</td>
                                     <td>{{ $i++ }}</td>
                                     @php
-                                        $photo = $item->room_photo ? 'uploads/rooms_resize/' . $item->room_photo : 'default.jpg';
+                                        $photo = $item->room_photo
+                                            ? 'uploads/rooms_resize/' . $item->room_photo
+                                            : 'default.jpg';
                                     @endphp
                                     <td><img src="{{ asset($photo) }}" width="50"></td>
                                     <td>{{ $item->room_name }}</td>
@@ -83,8 +85,9 @@
                                         <button type="button" class="btn btn-primary" id="btnEdit"
                                             onclick="$('#myModal'+{{ $item->room_id }}).modal('show');"><i
                                                 class="far fa-edit" id="btnEdit"></i></button>
-                                        <button type="button" class="btn btn-danger"><i
-                                                class="fas fa-minus-square"></i></button>
+                                        <a href="{{ route('room.delete', $item->room_id) }}" class="btn btn-danger"
+                                            onclick="return confirm('Do you want to delete ?')"><i
+                                                class="fas fa-minus-square"></i></a>
                                         <button type="button" class="btn btn-info"><i class="far fa-eye"></i></button>
                                     </td>
                                 </tr>
@@ -149,6 +152,7 @@
         document.getElementById('createButton').addEventListener('click', function() {
             $('#myModal').modal('show');
         });
+
         function previewImgForUpdate(event) {
             if (event.target.files && event.target.files[0]) {
                 var reader = new FileReader();

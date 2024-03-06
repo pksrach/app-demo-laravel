@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('room_name')->unique();
             $table->string('room_desc')->nullable();
             $table->enum('room_status', ['0', '1'])->default(1);
+            $table->enum('room_active', ['0', '1'])->default(1);
             $table->timestamps();
 
             $table->unsignedBigInteger('room_type_id');
