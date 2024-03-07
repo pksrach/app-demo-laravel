@@ -41,8 +41,24 @@
                         </button>
                     </div>
                 @endif
-                <button type="button" class="btn btn-primary" id="createButton"><i class="far fa-plus-square"></i>
-                    Create</button>
+                <div class="d-flex">
+                    <button type="button" class="btn btn-primary" id="createButton">
+                        <i class="far fa-plus-square"></i>Create
+                    </button>
+                    <form action="{{ route('room.search') }}"
+                        class="ml-auto d-none d-sm-inline-block form-inline my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" name="q_search" value="{{ $q_search ?? '' }}"
+                                class="form-control bg-white border-1 small" placeholder="Search for..." aria-label="Search"
+                                aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -66,7 +82,7 @@
                             }
                             $i = config('app.row') * ($page - 1) + 1;
                             ?>
-                            @foreach ($rooms as $item)
+                            @forelse ($rooms as $item)
                                 <tr>
                                     {{-- <td>{{ $item->room_id }}</td> --}}
                                     <td hidden>{{ $item->room_id }}</td>
@@ -114,10 +130,20 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="text-center p-5" style="color: gray; font-weight: bold;">
+                                        <h2>No data</h2>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
-                    {{ $rooms->links('vendor\pagination\bootstrap-5') }}
+                    {{-- {{ $rooms->links('vendor\pagination\bootstrap-5') }} --}}
+
+                    {{-- {{ $rooms->appends(request()->except('page'))->links('vendor.pagination.bootstrap-5') }} --}}
+
+                    {{ $rooms->appends(request()->query())->links('vendor.pagination.bootstrap-5') }}
                 </div>
             </div>
         </div>
@@ -151,6 +177,10 @@
     <script type="text/javascript">
         document.getElementById('createButton').addEventListener('click', function() {
             $('#myModal').modal('show');
+        });
+        
+        $(document).ready(function() {
+            $(".chosen-select").chosen();
         });
 
         function previewImgForUpdate(event) {

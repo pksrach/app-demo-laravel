@@ -27,7 +27,7 @@
         <div class="form-group row">
             <label for="room_status" class="col-sm-2 col-form-label">Status</label>
             <div class="col-sm-10">
-                <select class="form-select form-control" id="room_status" name="room_status">
+                <select class="form-select form-control chosen-select" id="room_status" name="room_status">
                     <option value="1">Aailable</option>
                     <option value="0">Unavilable</option>
                 </select>
@@ -40,7 +40,7 @@
         <div class="form-group row">
             <label for="room_type_id" class="col-sm-2 col-form-label">RoomType</label>
             <div class="col-sm-10">
-                <select class="form-select form-control" id="room_type_id" name="room_type_id">
+                <select class="form-select form-control chosen-select" id="room_type_id" name="room_type_id">
                     <option value="">---Choose RoomType---</option>
                     @foreach ($room_type as $rt)
                         <option value="{{ $rt->room_type_id }}">

@@ -15,6 +15,7 @@ class RoomController extends Controller
 {
     public function index()
     {
+        $data['q_search'] = "";
         $data['rooms'] = DB::table('rooms')->get();
 
         $data['rooms'] = DB::table('rooms')
@@ -203,5 +204,27 @@ class RoomController extends Controller
         } else {
             return redirect('room')->with('error', 'Data Updated Failed');
         }
+    }
+
+
+    public function search(Request $req)
+    {
+        $q_search = $req->q_search;
+        // $data['rooms'] = DB::table('rooms')->get();
+        $data['rooms'] = DB::table('rooms')
+            ->join('room_types', 'rooms.room_type_id', '=', 'room_types.room_type_id')
+            ->select('rooms.*', 'room_types.room_type_name')
+            ->where('room_active', '1')
+            ->where(function ($query) use ($q_search) {
+                $query = $query->orWhere('room_name', 'like', "%{$q_search}%")
+                    ->orWhere('room_desc', 'like', "%{$q_search}%");
+            })
+            ->orderBy('room_id', 'desc')
+            ->paginate(config('app.row'));
+
+        $data['q_search'] = $q_search;
+
+        $room_type = RoomType::all();
+        return view('backend.room.index', $data, compact('room_type'));
     }
 }
