@@ -6,9 +6,9 @@
     <div class="container-fluid">
 
         <!-- Page Heading -->
-        <h1 class="h3 mb-2 text-gray-800">Create Room</h1>
+        <h1 class="h3 mb-2 text-gray-800">Update Room</h1>
 
-        @include('backend.room.modal.form_create_room')
+        @include('backend.room.modal.form_update_room')
 
 
     </div>
