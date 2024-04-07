@@ -27,8 +27,8 @@ class AuthController extends Controller
         ); */
 
         // This code it check with auth if auth not found then it will return error
-        $user = $req->only('user_name', 'password');
-        if (Auth::attempt($user)) {
+        // $user = $req->only('user_name', 'password');
+        if (Auth::attempt(['user_name' => $req->user_name, 'password' => $req->password, 'active' => 1])) {
             return redirect()->intended('/')->with('success', 'Login successfully');
         }
         return redirect('login')->with('error', 'Failed to logined!');
