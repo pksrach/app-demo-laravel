@@ -43,7 +43,7 @@
                 @endif
                 <div class="d-flex">
                     <button type="button" class="btn btn-primary" id="createButton">
-                        <i class="far fa-plus-square"></i>Create
+                        Create
                     </button>
                     <form action="{{ route('room.search') }}"
                         class="ml-auto d-none d-sm-inline-block form-inline my-2 my-md-0 mw-100 navbar-search">
@@ -178,7 +178,7 @@
         document.getElementById('createButton').addEventListener('click', function() {
             $('#myModal').modal('show');
         });
-        
+
         $(document).ready(function() {
             $(".chosen-select").chosen();
         });
