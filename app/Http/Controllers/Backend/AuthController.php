@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -32,6 +34,33 @@ class AuthController extends Controller
             return redirect()->intended('/')->with('success', 'Login successfully');
         }
         return redirect('login')->with('error', 'Failed to logined!');
+    }
+
+    public function registration()
+    {
+        return view('backend.auth.register');
+    }
+
+    public function postRegistration(Request $req)
+    {
+        $req->validate([
+            'name' => 'required|unique:users',
+            'user_name' => 'required|unique:users',
+            'password' => 'required|unique:users',
+            'email' => 'required|unique:users|email'
+        ]);
+
+        $data = $req->all();
+        User::create([
+            'name' => $data['name'],
+            'user_name' => $data['user_name'],
+            'password' => bcrypt($data['password']),
+            'email' => $data['email'],
+            'active' => 1,
+            'language' => $data['language']
+        ]);
+
+        return redirect('register')->with('success', 'Register successfully');
     }
 
     public function logout()

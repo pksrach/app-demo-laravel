@@ -42,11 +42,8 @@
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                     </div>
 
-                                    @if (session('error'))
-                                        <div class="alert alert-danger">
-                                            {{ session('error') }}
-                                        </div>
-                                    @endif
+                                    @component('components.alert')
+                                    @endcomponent
                                     <form action="{{ route('login.post') }}" method="post" class="user">
                                         @csrf
                                         <div class="form-group">
@@ -86,7 +83,7 @@
                                         <a class="small" href="forgot-password.html">Forgot Password?</a>
                                     </div>
                                     <div class="text-center">
-                                        <a class="small" href="register.html">Create an Account!</a>
+                                        <a class="small" href="{{ route('registration') }}">Create an Account!</a>
                                     </div>
                                 </div>
                             </div>

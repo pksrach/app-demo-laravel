@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\RoomType;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -13,6 +14,14 @@ use Intervention\Image\Facades\Image;
 
 class RoomController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($req, $next) {
+            app()->setLocale(Auth::user()->language);
+            return $next($req);
+        });
+    }
+
     public function index()
     {
         $data['q_search'] = "";
