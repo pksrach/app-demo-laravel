@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Backend\AuthController;
+use App\Http\Controllers\Backend\DatatableController;
 use App\Http\Controllers\Backend\HomeController;
 use App\Http\Controllers\Backend\RoomController;
+use App\Http\Controllers\Backend\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +20,14 @@ Route::middleware(['auth'])->group(function () {
         Route::post('room/update', 'update');
 
         Route::get('room/search', 'search')->name('room.search');
-
         Route::get('room/delete/{id}', 'delete')->name('room.delete');
+    });
+
+    Route::get('datatable_rooms', [DatatableController::class,  'index']);
+
+    Route::controller(UserController::class)->group(function () {
+        Route::get('users', 'index');
+        Route::post('users/reset-password', 'resetPassword')->name('users.reset-password');
     });
 });
 
