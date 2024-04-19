@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title', 'Create Room')
+@section('title', 'Update Room')
 @section('roomList', 'show')
 @section('content')
     <!-- Begin Page Content -->

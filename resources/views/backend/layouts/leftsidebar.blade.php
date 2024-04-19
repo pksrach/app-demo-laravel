@@ -15,7 +15,7 @@
     <li class="nav-item active">
         <a class="nav-link" href="{{ url('/') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Dashboard</span></a>
+            <span>{{ trans('label.dashboard') }}</span></a>
     </li>
 
     <!-- Divider -->
@@ -31,15 +31,30 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
             aria-expanded="true" aria-controls="collapseTwo">
             <i class="fas fa-fw fa-cog"></i>
-            <span>Manage Booking Room</span>
+            <span>{{ trans('label.manage_bookingroom') }}</span>
         </a>
         <div id="collapseTwo" class="collapse @yield('roomList')" aria-labelledby="headingTwo"
             data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item {{ Request::is('room') ? 'active' : '' }}" href="{{ url('/room') }}">Room
-                    List</a>
+                <a class="collapse-item {{ Request::is('room') ? 'active' : '' }}"
+                    href="{{ url('/room') }}">{{ trans('label.room') }}</a>
                 <a class="collapse-item {{ Request::is('room/create') ? 'active' : '' }}"
-                    href="{{ url('/room/create') }}">Add New</a>
+                    href="{{ url('/room/create') }}">{{ trans('label.create_room') }}</a>
+            </div>
+        </div>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities1"
+            aria-expanded="true" aria-controls="collapseUtilities1">
+            <i class="fas fa-fw fa-wrench"></i>
+            <span>Manage Datable</span>
+        </a>
+        <div id="collapseUtilities1" class="collapse" aria-labelledby="headingUtilities"
+            data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <a class="collapse-item" href="{{ url('datatable_rooms') }}">DatatableRooms</a>
+                <a class="collapse-item" href="{{ url('getRoom') }}">AjaxRooms</a>
             </div>
         </div>
     </li>
@@ -49,15 +64,12 @@
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
             <i class="fas fa-fw fa-wrench"></i>
-            <span>Utilities</span>
+            <span>Setting</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <h6 class="collapse-header">Custom Utilities:</h6>
-                <a class="collapse-item" href="utilities-color.html">Colors</a>
-                <a class="collapse-item" href="utilities-border.html">Borders</a>
-                <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                <a class="collapse-item" href="utilities-other.html">Other</a>
+                <h6 class="collapse-header">Custom Setting:</h6>
+                <a class="collapse-item" href="{{ url('users') }}">User</a>
             </div>
         </div>
     </li>
@@ -116,7 +128,8 @@
     <!-- Sidebar Message -->
     <div class="sidebar-card d-none d-lg-flex">
         <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
-        <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!
+        <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and
+            more!
         </p>
         <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
     </div>
@@ -294,7 +307,9 @@
                 <li class="nav-item dropdown no-arrow">
                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                            {{ @Auth::user()->name }}
+                        </span>
                         <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
                     </a>
                     <!-- Dropdown - User Information -->

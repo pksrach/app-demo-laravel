@@ -25,6 +25,8 @@
     {{-- Chosen select --}}
     <link href="{{ asset('vendor/chosen/chosen.min.css') }}" rel="stylesheet">
 
+    @yield('style-datatable')
+
 </head>
 
 <body id="page-top">
