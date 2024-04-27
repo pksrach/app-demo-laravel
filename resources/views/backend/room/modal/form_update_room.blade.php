@@ -28,7 +28,7 @@
         <div class="form-group row">
             <label for="room_status" class="col-sm-2 col-form-label">Status</label>
             <div class="col-sm-10">
-                <select class="form-select form-control chosen-select" id="room_status" name="room_status">
+                <select class="form-select form-control" id="room_status" name="room_status">
                     <option value="1" {{ old('room_status', $item->room_status) == 1 ? 'selected' : '' }}>Available
                     </option>
                     <option value="0" {{ old('room_status', $item->room_status) == 0 ? 'selected' : '' }}>
